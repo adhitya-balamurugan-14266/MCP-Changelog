@@ -1,0 +1,32 @@
+# Catalyst CLI local config
+.catalystrc
+
+# Node modules
+node_modules/
+web-source/node_modules/
+
+# Build output
+web-source/dist/
+
+# macOS
+.DS_Store
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript build info
+*.tsbuildinfo
+web-source/node_modules/.tmp/
