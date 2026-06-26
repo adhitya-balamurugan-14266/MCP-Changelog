@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "targets": ["asset_manager"],
+    "ignore": [],
+    "source": "functions"
+  },
   "slate": [
     {
       "name": "mcp-changelog",

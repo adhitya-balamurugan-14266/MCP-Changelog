@@ -35,6 +35,8 @@ MCP Changelog gives users a running log of everything new, improved, and shipped
 | Styling | Tailwind CSS v4 (`@tailwindcss/vite`) |
 | Icons | Lucide React |
 | Hosting | Zoho Catalyst Slate (cloud build + CDN) |
+| Asset Storage | Zoho Catalyst Stratus (public object storage CDN) |
+| Backend | Zoho Catalyst Serverless Functions (Node.js 20, Advanced I/O) |
 
 ---
 
@@ -42,17 +44,22 @@ MCP Changelog gives users a running log of everything new, improved, and shipped
 
 ```
 MCP-Changelog/
-├── catalyst.json          # Catalyst project config (Slate source pointer)
-├── client/                # Catalyst static client placeholder
-└── web-source/            # React application source
+├── catalyst.json              # Catalyst project config (Slate + Functions)
+├── client/                    # Catalyst static client placeholder
+├── functions/
+│   └── asset_manager/         # Serverless function — manages Stratus assets
+│       ├── index.js           # POST /upload · DELETE /delete · POST /init-logos
+│       ├── package.json
+│       ├── catalyst-config.json
+│       └── logos/             # Bundled logo files (source for init-logos)
+└── web-source/                # React application source
     ├── src/
-    │   ├── components/    # UI components (Header, Sidebar, ReleaseList, etc.)
-    │   │   └── filters/   # CalendarFilter, ServicesFilter, DCFilter
-    │   ├── context/       # LanguageContext (React context for i18n)
-    │   ├── data/          # releases.ts, constants.ts, translations.ts
-    │   └── types/         # Shared TypeScript types
-    ├── public/
-    │   └── logos/         # 86 SVG product logos (Zoho + third-party)
+    │   ├── components/        # UI components (Header, Sidebar, ReleaseList, etc.)
+    │   │   └── filters/       # CalendarFilter, ServicesFilter, DCFilter
+    │   ├── context/           # LanguageContext (React context for i18n)
+    │   ├── data/              # releases.ts, constants.ts, translations.ts
+    │   └── types/             # Shared TypeScript types
+    ├── public/                # Static assets (no logos — served from Stratus)
     ├── index.html
     ├── vite.config.ts
     └── package.json
@@ -90,17 +97,49 @@ Output is written to `web-source/dist/`.
 
 The app is hosted on **Zoho Catalyst Slate** — a cloud build and serve platform. Catalyst Slate pulls the `web-source/` directory, runs `npm install && npm run build` in the cloud, and serves the resulting `dist/` folder over a global CDN.
 
+Product logos are stored in **Catalyst Stratus** (public object storage) at:
+```
+https://mcp-changelog-logos-development.zohostratus.in/{filename}
+```
+This keeps the Slate bundle lean — only HTML, CSS, and JS are shipped; logos are fetched from the Stratus CDN at runtime.
+
 ### Deploy
 
 ```bash
 # From the MCP-Changelog project root
-catalyst deploy slate -m "your commit message"
+catalyst deploy
 ```
 
-Catalyst Slate automatically handles:
-- Cloud dependency installation
-- Vite production build
-- Static asset serving with CDN edge caching
+Deploys both the `asset_manager` function and the Slate app together.
+
+To deploy only the Slate app (no function changes):
+
+```bash
+catalyst deploy --only slate
+```
+
+### Populate / Refresh Logos in Stratus
+
+The `asset_manager` function bundles all logos in its `logos/` directory. After any function deployment, call:
+
+```bash
+curl -X POST https://mcp-changelog-60047186223.development.catalystserverless.in/server/asset_manager/init-logos
+```
+
+This uploads all bundled logos to the Stratus bucket (safe to re-run; uses `overwrite: true`).
+
+### Upload a New Logo
+
+```bash
+# Encode the SVG as base64, then POST to the upload endpoint
+base64 -i NewService-whiteBG.svg | \
+  xargs -I{} curl -s -X POST \
+    https://mcp-changelog-60047186223.development.catalystserverless.in/server/asset_manager/upload \
+    -H "Content-Type: application/json" \
+    -d "{\"key\": \"NewService-whiteBG.svg\", \"content\": \"{}\"}"
+```
+
+No redeployment needed — the logo is live in Stratus immediately.
 
 ---
 
@@ -110,17 +149,48 @@ All release data lives in [`web-source/src/data/releases.ts`](web-source/src/dat
 
 ```ts
 {
-  id: string;           // unique ID
-  date: string;         // "YYYY-MM-DD"
-  title: string;
+  id: string;                   // unique ID e.g. "jun-2026-01"
+  date: string;                 // "YYYY-MM-DD"
+  title: string;                // e.g. "Zoho CRM has added 45 new tools"
   description: string;
-  category: ReleaseCategory;
-  services: string[];   // must match entries in ALL_SERVICES
+  category: ReleaseCategory;    // "New Service" | "New Tool" | "Enhancement" | "Tool Change" | "Tool Removed" | "Service Removed"
+  services: string[];           // must match entries in ALL_SERVICES (constants.ts)
   dataCenters: DataCenter[];
+  newTools?: string[];          // shown for New Tool / New Service / Enhancement
+  removedTools?: string[];      // shown for Tool Removed / Tool Change
 }
 ```
 
-After adding entries, rebuild and redeploy with `catalyst deploy slate`.
+**Title format rules:**
+- `New Tool` (multiple): `[Service] has added [N] new [topic] tools`
+- `New Tool` (single): `[Service] has added the [toolName] tool`
+- `Tool Removed` (multiple): `[Service] has removed [N] [topic] tools`
+- `Tool Removed` (single): `[Service] has removed the [toolName] tool`
+- `New Service`: `[Service] is now available in Zoho MCP`
+- `Tool Change`: `[Service] has updated [toolName]` *(only for renamed/signature-changed tools)*
+
+> If a service both adds **and** removes tools in the same release, create two separate entries — one `New Tool` and one `Tool Removed`.
+
+After adding entries, rebuild and redeploy:
+
+```bash
+cd web-source && npm run build && cp -r dist/* ../client/
+cd .. && catalyst deploy --only slate
+```
+
+## Adding a New Service Logo
+
+1. Add the SVG file to `functions/asset_manager/logos/`
+2. Add the Stratus URL entry to `SERVICE_LOGOS` in `web-source/src/data/constants.ts`:
+   ```ts
+   'Zoho NewService': 'https://mcp-changelog-logos-development.zohostratus.in/NewService-whiteBG.svg',
+   ```
+3. Deploy the function and call `init-logos` (or use the `/upload` endpoint for a no-deploy path):
+   ```bash
+   catalyst deploy  # redeploys function with new logo bundled
+   curl -X POST https://mcp-changelog-60047186223.development.catalystserverless.in/server/asset_manager/init-logos
+   ```
+4. Rebuild and redeploy Slate with the updated `constants.ts`.
 
 ---
 

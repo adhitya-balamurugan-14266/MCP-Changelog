@@ -14,6 +14,8 @@ export interface Release {
   category: ReleaseCategory;
   services: string[];
   dataCenters: DataCenter[];
+  newTools?: string[];
+  removedTools?: string[];
 }
 
 export type DataCenter = 'US' | 'EU' | 'IN' | 'AU' | 'JP' | 'CN' | 'CA' | 'SA' | 'All';
