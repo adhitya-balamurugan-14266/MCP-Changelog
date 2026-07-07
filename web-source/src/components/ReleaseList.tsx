@@ -26,12 +26,12 @@ function formatSectionLabel(key: string): string {
   const monthName = new Date(Number(year), Number(month) - 1, 1).toLocaleDateString('en-US', {
     month: 'long',
   });
-  return `${year} - ${monthName}`;
+  return `${monthName} ${year}`;
 }
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00');
-  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 }
 
 // Returns true for camelCase (getFields) or snake_case (add_purchase_order_attachment) identifiers
@@ -295,6 +295,8 @@ function ReleaseEntry({ r }: { r: Release }) {
 
 export default function ReleaseList({ releases }: Props) {
   const lang = useLang();
+  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
+
   if (releases.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -305,23 +307,69 @@ export default function ReleaseList({ releases }: Props) {
 
   const grouped = groupByYearMonth(releases);
   const sortedKeys = Array.from(grouped.keys()).sort((a, b) => b.localeCompare(a));
+  const latestKey = sortedKeys[0];
+
+  function toggleKey(key: string) {
+    setExpandedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
 
   return (
     <div>
       {sortedKeys.map((key) => {
         const group = grouped.get(key)!;
-        const sectionLabel = formatSectionLabel(key);
+        const label = formatSectionLabel(key);
+        const isLatest = key === latestKey;
+        const isExpanded = expandedKeys.has(key);
+
+        if (isLatest) {
+          return (
+            <section key={key} id={`month-${key}`} className="border-b border-zinc-200 py-8 last:border-b-0 dark:border-zinc-800">
+              <h2 className="mb-6 text-xl font-bold text-zinc-900 dark:text-zinc-100">
+                {label}
+              </h2>
+              <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                {group
+                  .sort((a, b) => b.date.localeCompare(a.date))
+                  .map((r) => <ReleaseEntry key={r.id} r={r} />)}
+              </div>
+            </section>
+          );
+        }
 
         return (
-          <section key={key} id={`month-${key}`} className="border-b border-zinc-200 py-8 last:border-b-0 dark:border-zinc-800">
-            <h2 className="mb-6 text-xl font-bold text-zinc-900 dark:text-zinc-100">
-              {sectionLabel}
-            </h2>
-            <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              {group
-                .sort((a, b) => b.date.localeCompare(a.date))
-                .map((r) => <ReleaseEntry key={r.id} r={r} />)}
-            </div>
+          <section key={key} id={`month-${key}`} className="border-b border-zinc-200 dark:border-zinc-800 last:border-b-0">
+            <button
+              onClick={() => toggleKey(key)}
+              className="flex w-full items-center justify-between py-5 text-left"
+            >
+              <h2 className="text-base font-semibold text-zinc-700 dark:text-zinc-300">
+                {label} Releases
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                  {group.length} release{group.length !== 1 ? 's' : ''}
+                </span>
+                <ChevronRight
+                  size={16}
+                  strokeWidth={2}
+                  className={`shrink-0 text-zinc-400 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
+                />
+              </div>
+            </button>
+            {isExpanded && (
+              <div className="pb-6">
+                <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                  {group
+                    .sort((a, b) => b.date.localeCompare(a.date))
+                    .map((r) => <ReleaseEntry key={r.id} r={r} />)}
+                </div>
+              </div>
+            )}
           </section>
         );
       })}

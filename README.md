@@ -14,9 +14,10 @@ MCP Changelog gives users a running log of everything new, improved, and shipped
 
 ## Features
 
-- **Release feed** — Chronological list of releases grouped by month, each showing category badge, date, affected services (with product logos), data center chips, and a description
+- **Release feed** — Chronological list of releases grouped by month; the latest month is expanded by default, all previous months are collapsed into labelled accordions (e.g. "June 2026 Releases") and load on demand
+- **Date display** — Releases show month + year only (e.g. "June 2026"), not a specific day
 - **Category tabs** — Filter by: New Service · New Tool · Enhancement · Tool Change · Tool Removed · Service Removed
-- **Sidebar filters** — Filter by month (collapsible by year), service (44 Zoho + third-party services), and data center (US · EU · IN · AU · JP · CN · CA · SA)
+- **Sidebar filters** — Filter by release period (collapsible by year, labelled "Release Period"), service (60+ Zoho + third-party services, always alphabetically sorted), and data center (US · EU · IN · AU · JP · CN · CA · SA)
 - **Full-text search** — Searches across release title, description, services, and category
 - **Bilingual UI** — English and Español; all labels, filters, and placeholders translate instantly
 - **Dark / Light theme** — Persisted to `localStorage`, defaults to system preference
@@ -149,8 +150,8 @@ All release data lives in [`web-source/src/data/releases.ts`](web-source/src/dat
 
 ```ts
 {
-  id: string;                   // unique ID e.g. "jun-2026-01"
-  date: string;                 // "YYYY-MM-DD"
+  id: string;                   // unique ID e.g. "jul-2026-01"
+  date: string;                 // "YYYY-MM-01" — day is ignored; only month + year is displayed
   title: string;                // e.g. "Zoho CRM has added 45 new tools"
   description: string;
   category: ReleaseCategory;    // "New Service" | "New Tool" | "Enhancement" | "Tool Change" | "Tool Removed" | "Service Removed"
@@ -161,7 +162,7 @@ All release data lives in [`web-source/src/data/releases.ts`](web-source/src/dat
 }
 ```
 
-**Title format rules:**
+**Title format rules** (see [`catalyst-skills/Release-mcp-notes.md`](../catalyst-skills/Release-mcp-notes.md) for full authoring guide):
 - `New Tool` (multiple): `[Service] has added [N] new [topic] tools`
 - `New Tool` (single): `[Service] has added the [toolName] tool`
 - `Tool Removed` (multiple): `[Service] has removed [N] [topic] tools`
@@ -171,12 +172,53 @@ All release data lives in [`web-source/src/data/releases.ts`](web-source/src/dat
 
 > If a service both adds **and** removes tools in the same release, create two separate entries — one `New Tool` and one `Tool Removed`.
 
+**Description rules:**
+- Single paragraph, 2–4 sentences. Start with what changed, not "This release…"
+- Name tool categories using parenthetical groupings `(create, update, delete, …)` — the renderer automatically converts these into inline chip tags.
+- Name tools explicitly when 5 or fewer are removed; describe by category otherwise.
+
+**Calendar range** — when a new month becomes active, add it to `CALENDAR_MONTHS` in `constants.ts`:
+```ts
+{ year: 2026, month: 8, label: 'Aug' },
+```
+
 After adding entries, rebuild and redeploy:
 
 ```bash
-cd web-source && npm run build && cp -r dist/* ../client/
-cd .. && catalyst deploy --only slate
+cd web-source && pnpm build
+cd .. && catalyst deploy slate -m "Brief description of what changed"
 ```
+
+> Always pass `-m` with a short description — it appears in the Catalyst deployment history.
+
+## Adding a New Service
+
+### 1. Add to `ALL_SERVICES`
+
+Insert the service name alphabetically in `web-source/src/data/constants.ts`. The Services filter auto-sorts at runtime, but keeping the source array alphabetical makes diffs cleaner.
+
+### 2. Add a logo
+
+If a logo SVG is available:
+1. Add the SVG file to `functions/asset_manager/logos/`
+2. Add the Stratus URL entry to `SERVICE_LOGOS` in `web-source/src/data/constants.ts`:
+   ```ts
+   'Zoho NewService': 'https://mcp-changelog-logos-development.zohostratus.in/NewService-whiteBG.svg',
+   ```
+3. Deploy the function and call `init-logos`:
+   ```bash
+   catalyst deploy  # redeploys function with new logo bundled
+   curl -X POST https://mcp-changelog-60047186223.development.catalystserverless.in/server/asset_manager/init-logos
+   ```
+   Or use the `/upload` endpoint for a no-deploy path (see Upload a New Logo below).
+
+If no logo is available yet, skip the `SERVICE_LOGOS` entry — the service tag renders without an icon.
+
+### 3. Add the release entry
+
+Add a `New Service` entry to `releases.ts` with the title `[Service] is now available in Zoho MCP`. Only add the entry if the service has at least one tool available — services with zero tools should not appear in the changelog.
+
+---
 
 ## Adding a New Service Logo
 

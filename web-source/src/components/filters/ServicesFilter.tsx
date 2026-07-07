@@ -10,6 +10,7 @@ interface Props {
 
 export default function ServicesFilter({ selected, onChange }: Props) {
   const lang = useLang();
+  const sortedServices = [...ALL_SERVICES].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
   function toggle(service: string) {
     if (selected.includes(service)) {
       onChange(selected.filter((s) => s !== service));
@@ -34,7 +35,7 @@ export default function ServicesFilter({ selected, onChange }: Props) {
         )}
       </div>
       <div className="max-h-64 space-y-0.5 overflow-y-auto pr-1">
-        {ALL_SERVICES.map((service) => {
+        {sortedServices.map((service) => {
           const checked = selected.includes(service);
           return (
             <label key={service} className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800">

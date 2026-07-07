@@ -14,7 +14,6 @@ interface Props {
 // Descending order: most recent year first
 const YEAR_GROUPS = [
   { year: 2026, months: CALENDAR_MONTHS.filter((m) => m.year === 2026) },
-  { year: 2025, months: CALENDAR_MONTHS.filter((m) => m.year === 2025) },
 ];
 
 export default function CalendarFilter({ selected, onChange }: Props) {
@@ -33,7 +32,7 @@ export default function CalendarFilter({ selected, onChange }: Props) {
   return (
     <div>
       <p className="mb-2.5 text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
-        {t(lang, 'month')}
+        Release Period
       </p>
       {YEAR_GROUPS.map(({ year, months }) => {
         const isOpen = expanded.has(year);
