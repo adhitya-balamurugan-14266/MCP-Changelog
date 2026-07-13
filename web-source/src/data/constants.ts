@@ -3,6 +3,7 @@ import type { DataCenter, ReleaseCategory } from '@/types';
 export const ALL_DATA_CENTERS: DataCenter[] = ['US', 'EU', 'IN', 'AU', 'JP', 'CN', 'CA', 'SA'];
 
 export const ALL_SERVICES: string[] = [
+  'BFSI',
   'Bigin',
   'Catalyst by Zoho',
   'CloudSpend',
@@ -26,6 +27,7 @@ export const ALL_SERVICES: string[] = [
   'Zoho Books',
   'Zoho Calendar',
   'Zoho Cliq',
+  'Zoho Command Center',
   'Zoho Commerce',
   'Zoho Connect',
   'Zoho Creator',
@@ -55,6 +57,7 @@ export const ALL_SERVICES: string[] = [
   'Zoho Recruit',
   'Zoho Sheet',
   'Zoho Sign',
+  'Zoho Show',
   'Zoho Social',
   'Zoho Sprints',
   'Zoho Survey',
@@ -91,6 +94,7 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'Zoho Books':           'https://mcp-changelog-logos-development.zohostratus.in/Books-whiteBG.svg',
   'Zoho Calendar':        'https://mcp-changelog-logos-development.zohostratus.in/Calendar-whiteBG.svg',
   'Zoho Cliq':            'https://mcp-changelog-logos-development.zohostratus.in/Cliq-whiteBG.svg',
+  'Zoho Command Center':  'https://mcp-changelog-logos-development.zohostratus.in/CommandCenter-whiteBG.svg',
   'Zoho Commerce':        'https://mcp-changelog-logos-development.zohostratus.in/Commerce-whiteBG.svg',
   'Zoho Connect':         'https://mcp-changelog-logos-development.zohostratus.in/Connect-whiteBG.svg',
   'Zoho Creator':         'https://mcp-changelog-logos-development.zohostratus.in/Creator-whiteBG.svg',
@@ -119,6 +123,7 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'Zoho Projects':        'https://mcp-changelog-logos-development.zohostratus.in/Projects-whiteBG.svg',
   'Zoho Recruit':         'https://mcp-changelog-logos-development.zohostratus.in/Recruit-whiteBG.svg',
   'Zoho Sheet':           'https://mcp-changelog-logos-development.zohostratus.in/Sheet-whiteBG.svg',
+  'Zoho Show':            'https://mcp-changelog-logos-development.zohostratus.in/Show-whiteBG.svg',
   'Zoho Sign':            'https://mcp-changelog-logos-development.zohostratus.in/Sign-whiteBG.svg',
   'Zoho Social':          'https://mcp-changelog-logos-development.zohostratus.in/Social-whiteBG.svg',
   'Zoho Sprints':         'https://mcp-changelog-logos-development.zohostratus.in/Sprints-whiteBG.svg',
