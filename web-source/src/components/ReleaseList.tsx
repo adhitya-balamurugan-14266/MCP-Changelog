@@ -10,6 +10,28 @@ interface Props {
   releases: Release[];
 }
 
+const CATEGORY_PRIORITY: Record<string, number> = {
+  'New Service': 0,
+  'New Tool': 1,
+  'Enhancement': 2,
+  'Tool Change': 3,
+  'Tool Removed': 4,
+  'Service Removed': 5,
+};
+
+function getIdSeq(id: string): number {
+  const m = id.match(/(\d+)[a-z]?$/);
+  return m ? parseInt(m[1], 10) : 0;
+}
+
+function sortReleases(releases: Release[]): Release[] {
+  return [...releases].sort((a, b) => {
+    const catDiff = (CATEGORY_PRIORITY[a.category] ?? 99) - (CATEGORY_PRIORITY[b.category] ?? 99);
+    if (catDiff !== 0) return catDiff;
+    return getIdSeq(b.id) - getIdSeq(a.id);
+  });
+}
+
 function groupByYearMonth(releases: Release[]): Map<string, Release[]> {
   const map = new Map<string, Release[]>();
   for (const r of releases) {
@@ -333,9 +355,7 @@ export default function ReleaseList({ releases }: Props) {
                 {label}
               </h2>
               <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                {group
-                  .sort((a, b) => b.date.localeCompare(a.date))
-                  .map((r) => <ReleaseEntry key={r.id} r={r} />)}
+                {sortReleases(group).map((r) => <ReleaseEntry key={r.id} r={r} />)}
               </div>
             </section>
           );
