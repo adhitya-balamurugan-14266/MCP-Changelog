@@ -12095,20 +12095,4 @@ export const RELEASES: Release[] = [
     ],
     removedTools: [],
   },
-  {
-    id: 'jul-2026-48',
-    date: '2026-07-01',
-    title: 'Zoho WorkDrive has removed 4 deprecated tools',
-    description: '4 deprecated tools removed from Zoho WorkDrive. These tools contained typos in their original names and have been retired: Copy_Mutliple_files_folders, Create_Mutliple_custommetadata, Update_Mutliple_Follow_Updates, and Update_Mutliple_files_folders.',
-    category: 'Tool Removed',
-    services: ['Zoho WorkDrive'],
-    dataCenters: ['US', 'EU', 'IN', 'AU', 'JP', 'CA', 'SA'],
-    newTools: [],
-    removedTools: [
-      'Copy_Mutliple_files_folders',
-      'Create_Mutliple_custommetadata',
-      'Update_Mutliple_Follow_Updates',
-      'Update_Mutliple_files_folders',
-    ],
-  },
 ];
