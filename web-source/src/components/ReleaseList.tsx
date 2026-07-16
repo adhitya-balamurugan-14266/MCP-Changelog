@@ -64,23 +64,29 @@ function isCodeIdentifier(s: string): boolean {
   );
 }
 
-const CODE_INLINE_RE = /\b([a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*|[a-z][a-z0-9]+(?:_[a-z0-9]+)+)\b/g;
+const INLINE_RE = /\*\*([^*]+)\*\*|\*([^*]+)\*|\b([a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*|[a-z][a-z0-9]+(?:_[a-z0-9]+)+)\b/g;
 
 function renderTextWithCode(text: string): React.ReactNode[] {
   const parts: React.ReactNode[] = [];
   let last = 0;
-  CODE_INLINE_RE.lastIndex = 0;
+  INLINE_RE.lastIndex = 0;
   let m: RegExpExecArray | null;
-  while ((m = CODE_INLINE_RE.exec(text)) !== null) {
+  while ((m = INLINE_RE.exec(text)) !== null) {
     if (m.index > last) parts.push(text.slice(last, m.index));
-    parts.push(
-      <code
-        key={m.index}
-        className="rounded border border-zinc-200 bg-zinc-100 px-1 py-0.5 font-mono text-[11px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-      >
-        {m[0]}
-      </code>
-    );
+    if (m[1] !== undefined) {
+      parts.push(<strong key={m.index}>{m[1]}</strong>);
+    } else if (m[2] !== undefined) {
+      parts.push(<em key={m.index}>{m[2]}</em>);
+    } else {
+      parts.push(
+        <code
+          key={m.index}
+          className="rounded border border-zinc-200 bg-zinc-100 px-1 py-0.5 font-mono text-[11px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+        >
+          {m[0]}
+        </code>
+      );
+    }
     last = m.index + m[0].length;
   }
   if (last < text.length) parts.push(text.slice(last));
@@ -290,7 +296,7 @@ function ReleaseEntry({ r }: { r: Release }) {
               </span>
             );
           })}
-          {r.dataCenters.map((dc) => (
+          {r.category !== 'Enhancement' && r.dataCenters.map((dc) => (
             <span
               key={dc}
               className="rounded-md bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
@@ -300,16 +306,17 @@ function ReleaseEntry({ r }: { r: Release }) {
           ))}
         </div>
 
-        {/* View All Tools button */}
-        <a
-          href="https://zoho-mcp-manual-tool-guide.onslate.in/zoho-services"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-600 transition-colors hover:border-zinc-300 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"
-        >
-          View All Tools of the Service
-          <ExternalLink size={10} strokeWidth={2} />
-        </a>
+        {r.category !== 'Enhancement' && (
+          <a
+            href="https://zoho-mcp-manual-tool-guide.onslate.in/zoho-services"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-600 transition-colors hover:border-zinc-300 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"
+          >
+            View All Tools of the Service
+            <ExternalLink size={10} strokeWidth={2} />
+          </a>
+        )}
       </div>
     </div>
   );

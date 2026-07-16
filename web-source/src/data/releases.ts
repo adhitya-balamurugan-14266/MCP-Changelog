@@ -6137,9 +6137,9 @@ export const RELEASES: Release[] = [
   {
     id: 'may-2026-34',
     date: '2026-05-01',
-    title: 'Zoho MCP — Grouped View for Tool Configuration',
+    title: 'Grouped View for Tool Configuration',
     description:
-      'The tool configuration experience in Zoho MCP now includes a Group view option. When adding tools from a service, you can toggle between the All Tools view and the new Group view, which organizes available tools into logical groups based on the service\'s offerings. In Group view, you can select all tools within a group at once or pick individual tools, and a search filter helps locate specific groups quickly.',
+      'The tool configuration experience in Zoho MCP has been enhanced with a new **Group view**. When adding tools from a service, you can now toggle between the **All Tools view** and the new *Group view*, which organizes available tools into logical groups based on the service\'s offerings. In the *Group view*, you can select all tools within a group at once or pick individual tools as needed. A search filter is also available to help you locate specific groups quickly.',
     category: 'Enhancement',
     services: ['Zoho MCP'],
     dataCenters: ['US', 'EU', 'IN', 'AU', 'JP', 'CA', 'SA'],
