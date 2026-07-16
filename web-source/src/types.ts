@@ -10,7 +10,7 @@ export interface Release {
   id: string;
   date: string; // ISO date string "YYYY-MM-DD"
   title: string;
-  description: string;
+  description: string | string[];
   category: ReleaseCategory;
   services: string[];
   dataCenters: DataCenter[];

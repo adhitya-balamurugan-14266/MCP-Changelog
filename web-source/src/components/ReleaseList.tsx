@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Release } from '@/types';
 import Badge from './Badge';
 import { SERVICE_LOGOS } from '@/data/constants';
+import { RELEASES } from '@/data/releases';
 import { useLang } from '@/context/LanguageContext';
 import { t } from '@/data/translations';
 import { ChevronRight, ExternalLink } from 'lucide-react';
@@ -145,36 +146,36 @@ function ReleaseEntry({ r }: { r: Release }) {
         ))}
         {r.title}
       </h3>
-      <p className="mb-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-        {parseDescription(r.description).map((seg, i) => {
-          if (seg.type === 'text') {
-            return <span key={i}>{renderTextWithCode(seg.content)}</span>;
-          }
-          if (seg.code) {
-            // camelCase/snake_case tool names → inline code chips
+      {(Array.isArray(r.description) ? r.description : [r.description]).map((para, pi) => (
+        <p key={pi} className="mb-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+          {parseDescription(para).map((seg, i) => {
+            if (seg.type === 'text') {
+              return <span key={i}>{renderTextWithCode(seg.content)}</span>;
+            }
+            if (seg.code) {
+              return (
+                <span key={i} className="inline-flex flex-wrap items-center gap-1 align-baseline mx-0.5">
+                  {seg.items.map((item, j) => (
+                    <code
+                      key={j}
+                      className="rounded border border-zinc-200 bg-zinc-100 px-1 py-0.5 font-mono text-[11px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                    >
+                      {item}
+                    </code>
+                  ))}
+                </span>
+              );
+            }
             return (
-              <span key={i} className="inline-flex flex-wrap items-center gap-1 align-baseline mx-0.5">
-                {seg.items.map((item, j) => (
-                  <code
-                    key={j}
-                    className="rounded border border-zinc-200 bg-zinc-100 px-1 py-0.5 font-mono text-[11px] text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                  >
-                    {item}
-                  </code>
-                ))}
-              </span>
+              <em key={i} className="not-italic mx-0.5">
+                <span className="italic text-zinc-500 dark:text-zinc-400">
+                  {seg.items.join(', ')}
+                </span>
+              </em>
             );
-          }
-          // Plain English groupings → italic
-          return (
-            <em key={i} className="not-italic mx-0.5">
-              <span className="italic text-zinc-500 dark:text-zinc-400">
-                {seg.items.join(', ')}
-              </span>
-            </em>
-          );
-        })}
-      </p>
+          })}
+        </p>
+      ))}
 
       {/* Tools accordion */}
       {(hasNew || hasRemoved) && (
@@ -336,7 +337,8 @@ export default function ReleaseList({ releases }: Props) {
 
   const grouped = groupByYearMonth(releases);
   const sortedKeys = Array.from(grouped.keys()).sort((a, b) => b.localeCompare(a));
-  const latestKey = sortedKeys[0];
+  const globalLatestKey = RELEASES.map((r) => r.date.slice(0, 7)).sort((a, b) => b.localeCompare(a))[0];
+  const latestKey = globalLatestKey ?? sortedKeys[0];
 
   function toggleKey(key: string) {
     setExpandedKeys((prev) => {

@@ -26,7 +26,7 @@ function applyFilters(filters: FilterState) {
     result = result.filter(
       (r) =>
         r.title.toLowerCase().includes(q) ||
-        r.description.toLowerCase().includes(q) ||
+        (Array.isArray(r.description) ? r.description.join(' ') : r.description).toLowerCase().includes(q) ||
         r.services.some((s) => s.toLowerCase().includes(q)) ||
         r.category.toLowerCase().includes(q),
     );
