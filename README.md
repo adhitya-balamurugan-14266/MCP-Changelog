@@ -17,7 +17,7 @@ MCP Changelog gives users a running log of everything new, improved, and shipped
 - **Release feed** — Chronological list of releases grouped by month; the latest month is expanded by default, all previous months are collapsed into labelled accordions (e.g. "June 2026 Releases") and load on demand
 - **Date display** — Releases show month + year only (e.g. "June 2026"), not a specific day
 - **Category tabs** — Filter by: New Service · New Tool · Enhancement · Tool Change · Tool Removed · Service Removed
-- **Sidebar filters** — Filter by release period (collapsible by year, labelled "Release Period"), service (64+ Zoho + third-party services, always alphabetically sorted), and data center (US · EU · IN · AU · JP · CN · CA · SA)
+- **Sidebar filters** — Filter by release period (collapsible by year, labelled "Release Period"), service (65+ Zoho + third-party services, always alphabetically sorted), and data center (US · EU · IN · AU · JP · CN · CA · SA)
 - **Full-text search** — Searches across release title, description, services, and category
 - **Bilingual UI** — English and Español; all labels, filters, and placeholders translate instantly
 - **Dark / Light theme** — Persisted to `localStorage`, defaults to system preference
@@ -233,6 +233,16 @@ Add a `New Service` entry to `releases.ts` with the title `[Service] is now avai
    curl -X POST https://mcp-changelog-60047186223.development.catalystserverless.in/server/asset_manager/init-logos
    ```
 4. Rebuild and redeploy Slate with the updated `constants.ts`.
+
+---
+
+## Recent Updates
+
+| Entry | Service | Change |
+|---|---|---|
+| jul-2026-49 | Zoho Projects | 37 new task management tools (custom views, task followers, task dependencies, template tasks, status timeline) |
+| jul-2026-48 | EndpointCentral | 629 new endpoint management tools across patch, deployment, inventory, compliance, remote control, and IT automation modules |
+| jul-2026-47 | Zoho Cliq | 21 new messaging tools (send, delete, pin/unpin messages; manage reactions, roles, chat membership, transient status, scheduled messages) |
 
 ---
 
