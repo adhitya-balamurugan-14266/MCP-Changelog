@@ -240,9 +240,12 @@ Add a `New Service` entry to `releases.ts` with the title `[Service] is now avai
 
 | Entry | Service | Change |
 |---|---|---|
+| may-2026-34 | Zoho MCP | Grouped View for Tool Configuration (Enhancement) — new Group view toggle when adding tools, select all in group, search by group |
 | jul-2026-49 | Zoho Projects | 37 new task management tools (custom views, task followers, task dependencies, template tasks, status timeline) |
 | jul-2026-48 | EndpointCentral | 629 new endpoint management tools across patch, deployment, inventory, compliance, remote control, and IT automation modules |
 | jul-2026-47 | Zoho Cliq | 21 new messaging tools (send, delete, pin/unpin messages; manage reactions, roles, chat membership, transient status, scheduled messages) |
+
+**App update (jul-2026):** "View All Tools of the Service" button now links to service-specific pages (e.g. `/zoho-services/zoho-pagesense`) instead of the generic listing. Falls back to the listing page for any service without a dedicated URL.
 
 ---
 
