@@ -67,6 +67,13 @@ function isCodeIdentifier(s: string): boolean {
 
 const INLINE_RE = /\*\*([^*]+)\*\*|\*([^*]+)\*|\b([a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*|[a-z][a-z0-9]+(?:_[a-z0-9]+)+)\b/g;
 
+const TOOL_GUIDE_BASE = 'https://zoho-mcp-manual-tool-guide.onslate.in/zoho-services';
+
+function serviceToToolGuideUrl(serviceName: string): string {
+  const slug = serviceName.toLowerCase().replace(/\s+/g, '-');
+  return `${TOOL_GUIDE_BASE}/${slug}`;
+}
+
 function renderTextWithCode(text: string): React.ReactNode[] {
   const parts: React.ReactNode[] = [];
   let last = 0;
@@ -309,7 +316,7 @@ function ReleaseEntry({ r }: { r: Release }) {
 
         {r.category !== 'Enhancement' && (
           <a
-            href="https://zoho-mcp-manual-tool-guide.onslate.in/zoho-services"
+            href={r.services.length > 0 ? serviceToToolGuideUrl(r.services[0]) : TOOL_GUIDE_BASE}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-600 transition-colors hover:border-zinc-300 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"
