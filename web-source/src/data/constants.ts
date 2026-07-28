@@ -3,6 +3,7 @@ import type { DataCenter, ReleaseCategory } from '@/types';
 export const ALL_DATA_CENTERS: DataCenter[] = ['US', 'EU', 'IN', 'AU', 'JP', 'CN', 'CA', 'SA'];
 
 export const ALL_SERVICES: string[] = [
+  'AnalyticsPlus',
   'BFSI',
   'Bigin',
   'Catalyst by Zoho',
@@ -32,6 +33,7 @@ export const ALL_SERVICES: string[] = [
   'Zoho Connect',
   'Zoho Creator',
   'Zoho CRM',
+  'Zoho CRM Plus',
   'Zoho Dataprep',
   'Zoho Desk',
   'Zoho Directory',
@@ -55,6 +57,7 @@ export const ALL_SERVICES: string[] = [
   'Zoho POS',
   'Zoho Procurement',
   'Zoho Projects',
+  'Zoho Quartz',
   'Zoho Recruit',
   'Zoho Sheet',
   'Zoho Sign',
@@ -67,10 +70,12 @@ export const ALL_SERVICES: string[] = [
   'Zoho Vertical Studio',
   'Zoho Voice',
   'Zoho Webinar',
+  'Zoho Workdrive',
   'Zoho Writer',
 ];
 
 export const SERVICE_LOGOS: Record<string, string> = {
+  'AnalyticsPlus':        'https://mcp-changelog-logos-development.zohostratus.in/Analytics%20Plus.svg',
   'Bigin':                'https://mcp-changelog-logos-development.zohostratus.in/Bigin-whiteBG.svg',
   'Catalyst by Zoho':     'https://mcp-changelog-logos-development.zohostratus.in/Catalyst-whiteBG.svg',
   'Catalyst Signals':     'https://mcp-changelog-logos-development.zohostratus.in/Catalyst-whiteBG.svg',
@@ -100,6 +105,7 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'Zoho Connect':         'https://mcp-changelog-logos-development.zohostratus.in/Connect-whiteBG.svg',
   'Zoho Creator':         'https://mcp-changelog-logos-development.zohostratus.in/Creator-whiteBG.svg',
   'Zoho CRM':             'https://mcp-changelog-logos-development.zohostratus.in/CRM-whiteBG.svg',
+  'Zoho CRM Plus':        'https://mcp-changelog-logos-development.zohostratus.in/CRM%20Plus-whiteBG.svg',
   'Zoho Dataprep':        'https://mcp-changelog-logos-development.zohostratus.in/DataPrep-whiteBG.svg',
   'Zoho Desk':            'https://mcp-changelog-logos-development.zohostratus.in/Desk-whiteBG.svg',
   'Zoho Directory':       'https://mcp-changelog-logos-development.zohostratus.in/Directory-whiteBG.svg',
@@ -123,6 +129,7 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'Zoho POS':             'https://mcp-changelog-logos-development.zohostratus.in/POS-whiteBG.svg',
   'Zoho Procurement':     'https://mcp-changelog-logos-development.zohostratus.in/Procurement-whiteBG.svg',
   'Zoho Projects':        'https://mcp-changelog-logos-development.zohostratus.in/Projects-whiteBG.svg',
+  'Zoho Quartz':          'https://mcp-changelog-logos-development.zohostratus.in/Quartz-whiteBG.svg',
   'Zoho Recruit':         'https://mcp-changelog-logos-development.zohostratus.in/Recruit-whiteBG.svg',
   'Zoho Sheet':           'https://mcp-changelog-logos-development.zohostratus.in/Sheet-whiteBG.svg',
   'Zoho Show':            'https://mcp-changelog-logos-development.zohostratus.in/Show-whiteBG.svg',
@@ -133,6 +140,7 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'Zoho Tables':          'https://mcp-changelog-logos-development.zohostratus.in/Tables-whiteBG.svg',
   'Zoho Vertical Studio': 'https://mcp-changelog-logos-development.zohostratus.in/Vertical-Studio-whiteBG.svg',
   'Zoho Webinar':         'https://mcp-changelog-logos-development.zohostratus.in/Webinar-whiteBG.svg',
+  'Zoho Workdrive':       'https://mcp-changelog-logos-development.zohostratus.in/WorkDrive-whiteBG.svg',
   'Zoho Writer':          'https://mcp-changelog-logos-development.zohostratus.in/Writer-whiteBG.svg',
 };
 
