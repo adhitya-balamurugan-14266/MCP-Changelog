@@ -5,12 +5,10 @@ export const ALL_DATA_CENTERS: DataCenter[] = ['US', 'EU', 'IN', 'AU', 'JP', 'CN
 export const ALL_SERVICES: string[] = [
   'AnalyticsPlus',
   'BFSI',
-  'Bigin',
   'Catalyst by Zoho',
   'CloudSpend',
   'EndpointCentral',
   'Log360Cloud',
-  'MDM',
   'Qntrl',
   'SalesIQ',
   'SDP',
@@ -18,7 +16,6 @@ export const ALL_SERVICES: string[] = [
   'Site 24x7',
   'Site 24x7 Tools',
   'Vani by Zoho',
-  'WorkDrive',
   'Zoho Analytics',
   'Zoho Apptics',
   'Zoho Assist',
@@ -29,12 +26,10 @@ export const ALL_SERVICES: string[] = [
   'Zoho Calendar',
   'Zoho Cliq',
   'Zoho Command Center',
-  'Zoho Commerce',
   'Zoho Connect',
   'Zoho Creator',
   'Zoho CRM',
   'Zoho CRM Plus',
-  'Zoho Dataprep',
   'Zoho Desk',
   'Zoho Directory',
   'Zoho ERP',
@@ -66,11 +61,9 @@ export const ALL_SERVICES: string[] = [
   'Zoho Sprints',
   'Zoho Survey',
   'Zoho Tables',
-  'Zoho Vault',
   'Zoho Vertical Studio',
-  'Zoho Voice',
   'Zoho Webinar',
-  'Zoho Workdrive',
+  'Zoho WorkDrive',
   'Zoho Writer',
 ];
 
@@ -82,7 +75,6 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'CloudSpend':           'https://mcp-changelog-logos-development.zohostratus.in/CloudSpend-icon.svg',
   'EndpointCentral':      'https://mcp-changelog-logos-development.zohostratus.in/EndpointCentral-icon.svg',
   'Log360Cloud':          'https://mcp-changelog-logos-development.zohostratus.in/Log360Cloud-icon.svg',
-  'MDM':                  'https://mcp-changelog-logos-development.zohostratus.in/MDM-icon.svg',
   'Qntrl':                'https://mcp-changelog-logos-development.zohostratus.in/Qntrl-whiteBG.svg',
   'SDP':                  'https://mcp-changelog-logos-development.zohostratus.in/ServiceDesk%20Plus.svg',
   'SDP on Demand':        'https://mcp-changelog-logos-development.zohostratus.in/ServiceDesk%20Plus_Black.svg',
@@ -90,7 +82,6 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'Site 24x7':            'https://mcp-changelog-logos-development.zohostratus.in/Site24x7-icon.svg',
   'Site 24x7 Tools':      'https://mcp-changelog-logos-development.zohostratus.in/Site24x7-icon.svg',
   'Vani by Zoho':         'https://mcp-changelog-logos-development.zohostratus.in/vani-logo-text-white.svg',
-  'WorkDrive':            'https://mcp-changelog-logos-development.zohostratus.in/WorkDrive-whiteBG.svg',
   'Zoho Analytics':       'https://mcp-changelog-logos-development.zohostratus.in/Analytics-whiteBG.svg',
   'Zoho Apptics':         'https://mcp-changelog-logos-development.zohostratus.in/Apptics-whiteBG.svg',
   'Zoho Assist':          'https://mcp-changelog-logos-development.zohostratus.in/Assist-whiteBG.svg',
@@ -129,7 +120,6 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'Zoho POS':             'https://mcp-changelog-logos-development.zohostratus.in/POS-whiteBG.svg',
   'Zoho Procurement':     'https://mcp-changelog-logos-development.zohostratus.in/Procurement-whiteBG.svg',
   'Zoho Projects':        'https://mcp-changelog-logos-development.zohostratus.in/Projects-whiteBG.svg',
-  'Zoho Quartz':          'https://mcp-changelog-logos-development.zohostratus.in/Quartz-whiteBG.svg',
   'Zoho Recruit':         'https://mcp-changelog-logos-development.zohostratus.in/Recruit-whiteBG.svg',
   'Zoho Sheet':           'https://mcp-changelog-logos-development.zohostratus.in/Sheet-whiteBG.svg',
   'Zoho Show':            'https://mcp-changelog-logos-development.zohostratus.in/Show-whiteBG.svg',
@@ -140,7 +130,7 @@ export const SERVICE_LOGOS: Record<string, string> = {
   'Zoho Tables':          'https://mcp-changelog-logos-development.zohostratus.in/Tables-whiteBG.svg',
   'Zoho Vertical Studio': 'https://mcp-changelog-logos-development.zohostratus.in/Vertical-Studio-whiteBG.svg',
   'Zoho Webinar':         'https://mcp-changelog-logos-development.zohostratus.in/Webinar-whiteBG.svg',
-  'Zoho Workdrive':       'https://mcp-changelog-logos-development.zohostratus.in/WorkDrive-whiteBG.svg',
+  'Zoho WorkDrive':       'https://mcp-changelog-logos-development.zohostratus.in/WorkDrive-whiteBG.svg',
   'Zoho Writer':          'https://mcp-changelog-logos-development.zohostratus.in/Writer-whiteBG.svg',
 };
 
@@ -177,12 +167,10 @@ export const BADGE_STYLES: Record<ReleaseCategory, { bg: string; text: string; d
   },
 };
 
-// Calendar range: Sep 2025 – Jun 2026
+export const ZOHO_FALLBACK_LOGO = 'https://mcp-changelog-logos-development.zohostratus.in/Zoho-favicon.svg';
+
+// Calendar range: Jan 2026 onwards
 export const CALENDAR_MONTHS: Array<{ year: number; month: number; label: string }> = [
-  { year: 2025, month: 9, label: 'Sep' },
-  { year: 2025, month: 10, label: 'Oct' },
-  { year: 2025, month: 11, label: 'Nov' },
-  { year: 2025, month: 12, label: 'Dec' },
   { year: 2026, month: 1, label: 'Jan' },
   { year: 2026, month: 2, label: 'Feb' },
   { year: 2026, month: 3, label: 'Mar' },

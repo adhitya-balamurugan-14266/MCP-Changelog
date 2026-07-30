@@ -11,10 +11,12 @@ interface Props {
   onChange: (month: string | null) => void;
 }
 
-// Descending order: most recent year first
-const YEAR_GROUPS = [
-  { year: 2026, months: CALENDAR_MONTHS.filter((m) => m.year === 2026) },
-];
+// Descending order: most recent year first, generated dynamically from CALENDAR_MONTHS
+const years = [...new Set(CALENDAR_MONTHS.map((m) => m.year))].sort((a, b) => b - a);
+const YEAR_GROUPS = years.map((year) => ({
+  year,
+  months: CALENDAR_MONTHS.filter((m) => m.year === year),
+}));
 
 export default function CalendarFilter({ selected, onChange }: Props) {
   const lang = useLang();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Release } from '@/types';
 import Badge from './Badge';
-import { SERVICE_LOGOS } from '@/data/constants';
+import { SERVICE_LOGOS, ZOHO_FALLBACK_LOGO } from '@/data/constants';
 import { RELEASES } from '@/data/releases';
 import { useLang } from '@/context/LanguageContext';
 import { t } from '@/data/translations';
@@ -142,10 +142,10 @@ function ReleaseEntry({ r }: { r: Release }) {
         </span>
       </div>
       <h3 className="mb-1.5 text-base font-semibold text-zinc-900 dark:text-zinc-100">
-        {r.services.filter((s) => SERVICE_LOGOS[s]).map((s) => (
+        {r.services.map((s) => (
           <img
             key={s}
-            src={SERVICE_LOGOS[s]}
+            src={SERVICE_LOGOS[s] ?? ZOHO_FALLBACK_LOGO}
             alt=""
             aria-hidden="true"
             className="mr-1.5 inline h-5 w-5 object-contain align-middle"
@@ -290,20 +290,15 @@ function ReleaseEntry({ r }: { r: Release }) {
 
       <div className="flex flex-wrap items-center justify-between gap-1.5">
         <div className="flex flex-wrap gap-1.5">
-          {r.services.map((s) => {
-            const logo = SERVICE_LOGOS[s];
-            return (
-              <span
-                key={s}
-                className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
-              >
-                {logo && (
-                  <img src={logo} alt="" aria-hidden="true" className="h-3.5 w-3.5 object-contain" />
-                )}
-                {s}
-              </span>
-            );
-          })}
+          {r.services.map((s) => (
+            <span
+              key={s}
+              className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+            >
+              <img src={SERVICE_LOGOS[s] ?? ZOHO_FALLBACK_LOGO} alt="" aria-hidden="true" className="h-3.5 w-3.5 object-contain" />
+              {s}
+            </span>
+          ))}
           {r.category !== 'Enhancement' && r.dataCenters.map((dc) => (
             <span
               key={dc}
