@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import type { Release } from '@/types';
 import Badge from './Badge';
 import { SERVICE_LOGOS, ZOHO_FALLBACK_LOGO } from '@/data/constants';
-import { RELEASES } from '@/data/releases';
 import { useLang } from '@/context/LanguageContext';
 import { t } from '@/data/translations';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 
 interface Props {
   releases: Release[];
+  latestMonthKey?: string;
 }
 
 const CATEGORY_PRIORITY: Record<string, number> = {
@@ -325,7 +325,7 @@ function ReleaseEntry({ r }: { r: Release }) {
   );
 }
 
-export default function ReleaseList({ releases }: Props) {
+export default function ReleaseList({ releases, latestMonthKey }: Props) {
   const lang = useLang();
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
@@ -339,8 +339,7 @@ export default function ReleaseList({ releases }: Props) {
 
   const grouped = groupByYearMonth(releases);
   const sortedKeys = Array.from(grouped.keys()).sort((a, b) => b.localeCompare(a));
-  const globalLatestKey = RELEASES.map((r) => r.date.slice(0, 7)).sort((a, b) => b.localeCompare(a))[0];
-  const latestKey = globalLatestKey ?? sortedKeys[0];
+  const latestKey = latestMonthKey ?? sortedKeys[0];
 
   function toggleKey(key: string) {
     setExpandedKeys((prev) => {

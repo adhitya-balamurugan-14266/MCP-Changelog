@@ -13472,4 +13472,24 @@ export const RELEASES: Release[] = [
     ],
     removedTools: [],
   },
+
+  // ─── August 2026 ──────────────────────────────────────────────────────
+
+  // New Tools
+  {
+    id: 'aug-2026-01',
+    date: '2026-08-01',
+    title: 'Catalyst by Zoho has added 3 new machine learning pipeline tools',
+    description:
+      '3 tools added to Catalyst by Zoho for AutoML and QuickML pipeline workflows. Agents can now create AutoML pipelines, retrieve sample data from published ML endpoints, and publish QuickML endpoints — enabling end-to-end machine learning model management from pipeline creation through deployment (Create_AutoML_Pipeline, Get_Endpoints_Sample_Data, Publish_QuickML_Endpoint).',
+    category: 'New Tool',
+    services: ['Catalyst by Zoho'],
+    dataCenters: ['US', 'EU', 'IN', 'AU', 'JP', 'CA', 'SA'],
+    newTools: [
+      'Create_AutoML_Pipeline',
+      'Get_Endpoints_Sample_Data',
+      'Publish_QuickML_Endpoint',
+    ],
+    removedTools: [],
+  },
 ];

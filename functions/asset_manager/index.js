@@ -146,6 +146,26 @@ module.exports = async (req, res) => {
       });
     }
 
+    // ──────────────────────────────────────────────
+    // GET /releases
+    // Returns releases.json from the Stratus bucket.
+    // ──────────────────────────────────────────────
+    else if (method === 'GET' && routePath === '/releases') {
+      res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=3600');
+
+      const objectStream = await bucket.getObject('releases.json');
+      const chunks = [];
+      objectStream.on('data', (chunk) => chunks.push(chunk));
+      objectStream.on('end', () => {
+        const json = Buffer.concat(chunks).toString('utf8');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(json);
+      });
+      objectStream.on('error', (err) => {
+        sendJson(res, 500, { status: 'error', message: err.message });
+      });
+    }
+
     else {
       sendJson(res, 404, { status: 'error', message: `No route: ${method} ${routePath}` });
     }

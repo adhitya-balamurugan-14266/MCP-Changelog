@@ -178,6 +178,7 @@ export const CALENDAR_MONTHS: Array<{ year: number; month: number; label: string
   { year: 2026, month: 5, label: 'May' },
   { year: 2026, month: 6, label: 'Jun' },
   { year: 2026, month: 7, label: 'Jul' },
+  { year: 2026, month: 8, label: 'Aug' },
 ];
 
 export const LANGUAGES = [

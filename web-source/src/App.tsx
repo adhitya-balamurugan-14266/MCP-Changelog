@@ -1,13 +1,15 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Header from '@/components/Header';
 import CategoryTabs from '@/components/CategoryTabs';
 import Sidebar from '@/components/Sidebar';
 import ReleaseList from '@/components/ReleaseList';
 import BackToTop from '@/components/BackToTop';
-import { RELEASES } from '@/data/releases';
 import { LanguageContext } from '@/context/LanguageContext';
 import type { Lang } from '@/data/translations';
-import type { FilterState, Theme } from '@/types';
+import type { FilterState, Theme, Release } from '@/types';
+
+const RELEASES_API =
+  'https://mcp-changelog-60047186223.development.catalystserverless.in/server/asset_manager/releases';
 
 const INITIAL_FILTERS: FilterState = {
   search: '',
@@ -17,8 +19,8 @@ const INITIAL_FILTERS: FilterState = {
   selectedCategories: [],
 };
 
-function applyFilters(filters: FilterState) {
-  let result = RELEASES;
+function applyFilters(releases: Release[], filters: FilterState) {
+  let result = releases;
 
   // Search
   if (filters.search.trim()) {
@@ -69,8 +71,20 @@ export default function App() {
     return 'light';
   });
 
+  const [allReleases, setAllReleases] = useState<Release[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [language, setLanguage] = useState('en');
+
+  useEffect(() => {
+    fetch(RELEASES_API)
+      .then((r) => r.json())
+      .then((data: Release[]) => {
+        setAllReleases(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   // Apply dark class to html element
   if (typeof document !== 'undefined') {
@@ -83,7 +97,12 @@ export default function App() {
     localStorage.setItem('theme', next);
   }
 
-  const filtered = useMemo(() => applyFilters(filters), [filters]);
+  const latestMonthKey = useMemo(
+    () => allReleases.map((r) => r.date.slice(0, 7)).sort((a, b) => b.localeCompare(a))[0],
+    [allReleases],
+  );
+
+  const filtered = useMemo(() => applyFilters(allReleases, filters), [allReleases, filters]);
 
   return (
     <LanguageContext.Provider value={language as Lang}>
@@ -108,7 +127,15 @@ export default function App() {
             onFiltersChange={setFilters}
           />
           <div className="min-w-0 flex-1">
-            <ReleaseList releases={filtered} />
+            {loading ? (
+              <div className="flex flex-col gap-4">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="h-28 animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800" />
+                ))}
+              </div>
+            ) : (
+              <ReleaseList releases={filtered} latestMonthKey={latestMonthKey} />
+            )}
           </div>
         </div>
       </main>
